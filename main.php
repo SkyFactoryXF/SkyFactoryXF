@@ -48,32 +48,29 @@ class Barn implements Storage { // Амбар
 
     public function addProduct(string $type, int $count) {
         $index = array_search($type, array_column($this->storage, 'type'));
-        $item = $this->storage[$index];
 
         $freeSpace = $this->getFreeSpaceProduct($type);
 
         if($freeSpace === 0){
             return;
         } else if ($freeSpace < $count){
-            $item['storage'] = $item['max'];
+            $this->storage[$index]['storage'] = $this->storage[$index]['max'];
             return;
         }
 
-        $item['storage'] += $count;
+        $this->storage[$index]['storage'] += $count;
     }
 
     public function getFreeSpaceProduct(string $type){
         $index = array_search($type, array_column($this->storage, 'type'));
-        $item = $this->storage[$index];
 
-        return $item['max'] - $item['storage'];
+        return $this->storage[$index]['max'] - $this->storage[$index]['storage'];
     }
 
     public function howMuchProduct(string $type){
         $index = array_search($type, array_column($this->storage, 'type'));
-        $item = $this->storage[$index];
 
-        return $item['storage'];
+        return $this->storage[$index]['storage'];
     }
     
     public function howMuchProducts() {
